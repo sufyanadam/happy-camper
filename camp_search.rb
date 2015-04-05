@@ -3,17 +3,17 @@ require 'open-uri'
 require 'capybara'
 
 CAMPSITE_URLS = {
-  samuel_p_taylor:      ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120081" },
+  samuel_p_taylor:      ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120081"  },
   kirby_cove:           ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=NRSO&parkId=70972" },
-  mt_tamalpais_sp:      ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120063" },
-  anthony_chabot:       ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=EB&parkId=110004" },
-  mt_diablo:            ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120061" },
-  sugarloaf_ridge:      ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120092" },
-  half_moon_bay:        ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120039" },
-  del_valle:            ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=EB&parkId=110003" },
-  bothenapa_valley_sp:  ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120011" },
-  portola_redwoods_sp:  ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120073" },
-  butano_sp:            ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120013" }
+  mt_tamalpais_sp:      ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120063"  },
+  anthony_chabot:       ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=EB&parkId=110004"  },
+  mt_diablo:            ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120061"  },
+  sugarloaf_ridge:      ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120092"  },
+  half_moon_bay:        ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120039"  },
+  del_valle:            ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=EB&parkId=110003"  },
+  bothenapa_valley_sp:  ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120011"  },
+  portola_redwoods_sp:  ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120073"  },
+  butano_sp:            ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120013"  }
 }
 
 def find_available_weekends(campsite_url, preferred_day: :friday, length_of_stay_in_nights: 2)
