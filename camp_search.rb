@@ -1,6 +1,7 @@
 require 'date'
 require 'open-uri'
 require 'capybara'
+require 'pry'
 
 CAMPSITE_URLS = {
   samuel_p_taylor:      ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120081"  },
@@ -22,8 +23,7 @@ def find_available_weekends(campsite_url, preferred_day: :friday, length_of_stay
   available_weekends = []
 
   weekends.each do |day|
-    url = CAMPSITE_URLS[:samuel_p_taylor].(day)
-    page = Capybara::Node::Simple.new(Nokogiri::HTML(open(url)))
+    page = Capybara::Node::Simple.new(Nokogiri::HTML(open(campsite_url.(day))))
     availability = {}
     availability[day] = {}
     campsite_availability_rows = page.all('#calendar.items tbody tr')
@@ -70,6 +70,26 @@ def get_weekends(today, preferred_day)
   weekends
 end
 
-find_available_weekends(nil).each do |result_hash|
+def format_park_name(park_name)
+  park_name.to_s.gsub(/(^[a-z]{1})|(_[a-z]{1})/) { |matched| matched.gsub('_', ' ').upcase}.gsub(/Sp\Z/, 'SP')
+end
+
+puts "What park would you like to search availability for?"
+puts "Known parks:\n"
+longest_name_length = CAMPSITE_URLS.keys.max_by(&:size).size
+CAMPSITE_URLS.keys.each_with_index do |park, index|
+  puts <<-PARK_MAP
+    #{format_park_name(park).ljust(longest_name_length)} #{index.to_s.rjust(3)}
+  PARK_MAP
+end
+
+print ">"
+park_to_search = STDIN.gets.chomp.to_i
+park_key = CAMPSITE_URLS.keys[park_to_search]
+url = CAMPSITE_URLS[park_key]
+
+puts "\nSearching for available campsites at #{format_park_name(park_key)} park"
+
+find_available_weekends(url).each do |result_hash|
   puts "Campsite #{result_hash[:campsite_name].gsub(/\s/, '')} is available on #{result_hash[:date]} for #{result_hash[:length_of_stay]} nights! Book it now at #{result_hash[:campsite_link]}"
 end
