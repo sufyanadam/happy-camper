@@ -17,6 +17,8 @@ CAMPSITE_URLS = {
   butano_sp:            ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=CA&parkId=120013"  }
 }
 
+MAX_WEEKENDS_COUNT = 30
+
 def find_available_weekends(campsite_url, preferred_day: :friday, length_of_stay_in_nights: 2)
   today = Date.today
   weekends = get_weekends(today, preferred_day)
@@ -64,7 +66,7 @@ def get_weekends(today, preferred_day)
   today.next.upto(today.next + 365).each do |day|
     weekends << day if day.send("#{preferred_day}?")
 
-    break if weekends.length >= 48
+    break if weekends.length >= MAX_WEEKENDS_COUNT
   end
 
   weekends
