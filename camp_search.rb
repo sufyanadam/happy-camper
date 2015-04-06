@@ -77,6 +77,7 @@ end
 puts "What park would you like to search availability for?"
 puts "Known parks:\n"
 longest_name_length = CAMPSITE_URLS.keys.max_by(&:size).size
+
 CAMPSITE_URLS.keys.each_with_index do |park, index|
   puts <<-PARK_MAP
     #{format_park_name(park).ljust(longest_name_length)} #{index.to_s.rjust(3)}
