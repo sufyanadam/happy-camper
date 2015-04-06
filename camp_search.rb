@@ -91,8 +91,8 @@ park_to_search = STDIN.gets.chomp.to_i
 park_key = CAMPSITE_URLS.keys[park_to_search]
 url = CAMPSITE_URLS[park_key]
 
-puts "\nSearching for available campsites at #{format_park_name(park_key)} park"
+puts "\nSearching for available campsites at #{format_park_name(park_key)} park...\n\n"
 
 find_available_weekends(url).each do |result_hash|
-  puts "Campsite #{result_hash[:campsite_name].gsub(/\s/, '')} is available on #{result_hash[:date]} for #{result_hash[:length_of_stay]} nights! Book it now at #{result_hash[:campsite_link]}"
+  puts "Campsite #{result_hash[:campsite_name].gsub(/\s/, '').gsub(/Map/,'')} is available on #{result_hash[:date]} for #{result_hash[:length_of_stay]} nights! Book it now at http://reserveamerica.com#{result_hash[:campsite_link]}\n\n"
 end
