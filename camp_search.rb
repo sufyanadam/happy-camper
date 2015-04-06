@@ -139,5 +139,5 @@ if available_weekends.empty?
 end
 
 available_weekends.each do |result_hash|
-  puts "Campsite #{result_hash[:campsite_name].gsub(/\s/, '').gsub(/Map/,'')} is available on #{result_hash[:date]} for #{result_hash[:length_of_stay]} nights! Book it now at http://reserveamerica.com#{result_hash[:campsite_link]}\n\n"
+  puts "\n\nCampsite #{result_hash[:campsite_name].gsub(/\s/, '').gsub(/Map/,'')} is available on #{result_hash[:date]} for #{result_hash[:length_of_stay]} nights! Book it now at http://reserveamerica.com#{result_hash[:campsite_link]}\n\n"
 end
