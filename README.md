@@ -1,6 +1,10 @@
 # Find a campsite, be happy
 
   For the next 30 weekends from today, check if any campsites are available.
+  You have the option to provide the site id of a specific site at the park if
+  you want to check availability of that site only. Otherwise, all available
+  tent sites will be checked for availability on each weekend up to the 30th
+  weekend from today.
 
 # Why?
 
@@ -16,7 +20,9 @@
 
 # Usage
 
-  Download `camp_search.rb` and run `ruby camp_search.rb`.
+  * Download `camp_search.rb`
+  * Run `ruby camp_search.rb` in your terminal
+  * Follow prompts
 
 # Disclaimer
 
