@@ -16,6 +16,8 @@ PARKS = {
   butano_sp:           {contract_code: 'CA',   park_id: '120013' }
 }
 
+DAY_OF_WEEK = %i[friday saturday sunday monday tuesday wednesday thursday]
+
 PARK_AVAILABILITY_URL = ->(contract_code, park_id) { ->(date) { "http://www.reserveamerica.com/campsiteCalendar.do?page=matrix&calarvdate=#{date.strftime('%m/%d/%Y')}&contractCode=#{contract_code}&parkId=#{park_id}" } }
 
 SPECIFIC_SITE_AVAILABILITY_URL = ->(park_name, contract_code, park_id, site_id) { ->(date) { "http://www.reserveamerica.com/camping/#{park_name}/r/campsiteDetails.do?arvdate=#{date.strftime('%m/%d/%Y')}&contractCode=#{contract_code}&parkId=#{park_id}&siteId=#{site_id}" } }
@@ -117,21 +119,30 @@ park_to_search = STDIN.gets.chomp.to_i
 park_key = PARKS.keys[park_to_search]
 park_contract_code = PARKS[park_key][:contract_code]
 park_id = PARKS[park_key][:park_id]
-print "\nWould you like to enter a site id to search availability of a specific site at #{format_park_name(park_key)}?(y/n) > "
+print "\nHow many nights are you looking to camp for? (default: 2) >"
+length_of_stay_in_nights = STDIN.gets.chomp.to_i
+length_of_stay_in_nights = 2 if length_of_stay_in_nights < 1
+puts "\nWhat day of the week would you like to search availability for? (default: Friday):"
+DAY_OF_WEEK.each_with_index do |day, index|
+  puts "#{day.to_s.ljust(9)} #{index.to_s.rjust(3)}"
+end
+print "> "
+preferred_day = DAY_OF_WEEK[STDIN.gets.chomp.to_i]
+print "\nDo you already have your eye on a specific site at #{format_park_name(park_key)}?(y/n) > "
 specific_site = STDIN.gets.chomp
 if specific_site == 'y' || specific_site == 'Y'
-  print "Enter the site id: "
+  print "Enter the site id of the specific site you have in mind: "
   site_id = STDIN.gets.chomp
 end
 if site_id
   url = SPECIFIC_SITE_AVAILABILITY_URL.(park_key.to_s, park_contract_code, park_id, site_id)
+  puts "\nSearching for availability of site #{site_id} at #{format_park_name(park_key)} park...\n\n"
 else
   url = PARK_AVAILABILITY_URL.(park_contract_code, park_id)
+  puts "\nSearching for available campsites at #{format_park_name(park_key)} park...\n\n"
 end
 
-puts "\nSearching for available campsites at #{format_park_name(park_key)} park...\n\n"
-
-available_weekends = find_available_weekends(url)
+available_weekends = find_available_weekends(url, preferred_day: preferred_day, length_of_stay_in_nights: length_of_stay_in_nights)
 
 if available_weekends.empty?
   puts "\n\nNo available weekends to book :("
