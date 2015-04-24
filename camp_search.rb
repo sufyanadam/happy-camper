@@ -1,3 +1,4 @@
+require 'yaml'
 require 'date'
 require 'open-uri'
 require 'capybara'
@@ -14,7 +15,7 @@ PARKS = {
   bothenapa_valley_sp: {contract_code: 'CA',   park_id: '120011' },
   portola_redwoods_sp: {contract_code: 'CA',   park_id: '120073' },
   butano_sp:           {contract_code: 'CA',   park_id: '120013' }
-}
+}.merge(YAML.load(File.read('parks.yml')))
 
 DAY_OF_WEEK = %i[friday saturday sunday monday tuesday wednesday thursday]
 
@@ -104,8 +105,15 @@ def format_park_name(park_name)
   park_name.to_s.gsub(/(^[a-z]{1})|(_[a-z]{1})/) { |matched| matched.gsub('_', ' ').upcase}.gsub(/Sp\Z/, 'SP')
 end
 
+def get_park_info_from(url)
+  park_name, contract_code, park_id = url.match(/camping\/(.+)\/r.+contractCode=(.+).+parkId=(.+)\b/).captures
+  return {} if [park_name, contract_code, park_id].any? { |item| item.nil? }
+
+  {park_name => {contract_code: contract_code, park_id: park_id}}
+end
+
 puts "What park would you like to search availability for?"
-puts "Known parks:\n"
+puts "Known parks:\n\n"
 longest_name_length = PARKS.keys.max_by(&:size).size
 
 PARKS.keys.each_with_index do |park, index|
@@ -114,9 +122,35 @@ PARKS.keys.each_with_index do |park, index|
   PARK_MAP
 end
 
-print "> "
+puts sprintf "    %s %s", "Other".ljust(longest_name_length), PARKS.keys.length.to_s.rjust(3)
+
+print "\n> "
 park_to_search = STDIN.gets.chomp.to_i
 park_key = PARKS.keys[park_to_search]
+
+if park_key.nil?
+  puts "Enter the reserve america url of the campsite you're interested in. It should look like: http://www.reserveamerica.com/camping/samuel-p-taylor-sp/r/campgroundDetails.do?contractCode=CA&parkId=120081"
+
+  park_info = nil
+
+  user_url, park_info = loop do
+    print "\n>"
+    url = STDIN.gets.chomp
+    info = get_park_info_from url
+
+    break [url, info] unless info.empty?
+
+    puts "Looks like the the url you gave me wasn't quite what I was looking for. Give me the url from your browser after searching for camping availability for any date at your desired park on reserveamerica.com"
+  end
+
+  File.open('parks.yml', 'a') do |f|
+    f.write park_info.to_yaml
+  end
+
+  PARKS.merge!(park_info)
+  park_key = PARKS.keys[park_to_search]
+end
+
 park_contract_code = PARKS[park_key][:contract_code]
 park_id = PARKS[park_key][:park_id]
 print "\nHow many nights are you looking to camp for? (default: 2) >"

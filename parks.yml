@@ -1,0 +1,37 @@
+---
+:samuel_p_taylor_sp:
+  :contract_code: CA
+  :park_id: '120081'
+:kirby_cove:
+  :contract_code: NRSO
+  :park_id: '70972'
+:mt_tamalpais_sp:
+  :contract_code: CA
+  :park_id: '120063'
+:anthony_chabot:
+  :contract_code: EB
+  :park_id: '110004'
+:mt_diablo:
+  :contract_code: CA
+  :park_id: '120061'
+:sugarloaf_ridge:
+  :contract_code: CA
+  :park_id: '120092'
+:half_moon_bay:
+  :contract_code: CA
+  :park_id: '120039'
+:del_valle:
+  :contract_code: EB
+  :park_id: '110003'
+:bothenapa_valley_sp:
+  :contract_code: CA
+  :park_id: '120011'
+:portola_redwoods_sp:
+  :contract_code: CA
+  :park_id: '120073'
+:butano_sp:
+  :contract_code: CA
+  :park_id: '120013'
+lower-pines:
+  :contract_code: NRSO
+  :park_id: '70928'
