@@ -20,8 +20,8 @@
 
 # Usage
 
-  * Download `camp_search.rb`
-  * Run `ruby camp_search.rb` in your terminal
+  * `git clone https://github.com/sufyanadam/happy-camper`
+  * `ruby camp_search.rb`
   * Follow prompts
 
 # Disclaimer
