@@ -147,7 +147,7 @@ if park_key.nil?
   end
 
   File.open('parks.yml', 'a') do |f|
-    f.write park_info.to_yaml
+    f.write park_info.to_yaml[4..-1]
   end
 
   PARKS.merge!(park_info)
