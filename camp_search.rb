@@ -102,7 +102,10 @@ def get_weekends(today, preferred_day)
 end
 
 def format_park_name(park_name)
-  park_name.to_s.gsub(/(^[a-z]{1})|(_[a-z]{1})/) { |matched| matched.gsub('_', ' ').upcase}.gsub(/Sp\Z/, 'SP')
+  park_name.to_s.
+    gsub(/(^[a-z]{1})|(_[a-z]{1})|(-[a-z])/) { |matched| matched.gsub('_', ' ').upcase }.
+    gsub(/Sp\Z/, 'SP').
+    gsub('-', ' ')
 end
 
 def get_park_info_from(url)
