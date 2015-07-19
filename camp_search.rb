@@ -146,6 +146,8 @@ if park_key.nil?
     puts "Looks like the the url you gave me wasn't quite what I was looking for. Give me the url from your browser after searching for camping availability for any date at your desired park on reserveamerica.com"
   end
 
+  return if PARKS.keys.include?(park_info.keys.first)
+
   File.open('parks.yml', 'a') do |f|
     f.write park_info.to_yaml[4..-1]
   end
