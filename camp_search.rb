@@ -109,10 +109,20 @@ def format_park_name(park_name)
 end
 
 def get_park_info_from(url)
-  park_name, contract_code, park_id = url.match(/camping\/(.+)\/r.+contractCode=(.+).+parkId=(.+)\b/).captures
-  return {} if [park_name, contract_code, park_id].any? { |item| item.nil? }
+  park_name, contract_code, park_id = url.scan(/camping\/(.+)\/r.+|contractCode=(.+).+parkId=(.+)\b/).flatten
+  info = {'Park Name' => park_name, 'Contract Code' => contract_code, 'Park ID' => park_id}.reduce({}) do |reduced, (key, value)|
+    if value.nil?
+      puts "Sorry, I was unable to retrieve the #{key} from that url, please type it in for me:"
+      print '>'
+      reduced[key] = gets.strip
+    else
+      reduced[key] = value
+    end
 
-  {park_name => {contract_code: contract_code, park_id: park_id}}
+    reduced
+  end
+
+  {info['Park Name'] => {contract_code: info['Contract Code'], park_id: info['Park ID']}}
 end
 
 puts "What park would you like to search availability for?"
