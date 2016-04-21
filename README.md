@@ -24,6 +24,12 @@
   * `ruby camp_search.rb`
   * Follow prompts
 
+### Example
+  * Find available campsites at the Samuel P Taylor park over the
+    next 30 weekends from today:
+
+  ![usage](https://raw.githubusercontent.com/sufyanadam/happy-camper/master/happy-camper.gif)
+
 # Disclaimer
 
   I am not responsible for anything as a result of your use of this script or anything related to this script.
