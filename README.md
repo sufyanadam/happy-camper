@@ -21,6 +21,8 @@
 # Usage
 
   * `git clone https://github.com/sufyanadam/happy-camper`
+  * install phantomjs (`brew install phantomjs` on mac)
+  * `bundle install`
   * `ruby camp_search.rb`
   * Follow prompts
 
