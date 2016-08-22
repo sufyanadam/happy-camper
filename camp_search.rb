@@ -30,23 +30,23 @@ def find_available_weekends(campsite_url, preferred_day: :friday, length_of_stay
   today = Date.today
   weekends = get_weekends(today, preferred_day)
   available_weekends = []
+  Capybara.app_host = 'http://www.reserveamerica.com'
+  session = Capybara::Session.new(:poltergeist)
 
   weekends.each do |day|
-    Capybara.current_driver = :poltergeist
-    Capybara.visit campsite_url.(day)
-    Capybara.click_on 'Date Range Availability'
-    page = Capybara::Node::Simple.new(Capybara.page.body)
-
+    session.visit campsite_url.(day)
+    session.click_on 'Date Range Availability'
+	
     availability = {}
     availability[day] = {}
 
-    if page.has_selector?('td#avail1')
-      campsite_name = page.find('.siteTile').text
+    if session.has_selector?('td#avail1')
+      campsite_name = session.find('.siteTile').text
       campsite_link = campsite_url.(day).gsub('http://www.reserveamerica.com', '')
       availability[day][campsite_name] = []
 
       length_of_stay_in_nights.times do |i|
-        availability[day][campsite_name] << page.find("td#avail#{i + 1}")[:title]
+        availability[day][campsite_name] << session.find("td#avail#{i + 1}")[:title]
       end
 
       if availability[day][campsite_name].all? { |status| status == 'Available' }
@@ -62,7 +62,7 @@ def find_available_weekends(campsite_url, preferred_day: :friday, length_of_stay
 
       next
     end
-    campsite_availability_rows = page.all('#calendar.items tbody tr')
+    campsite_availability_rows = session.all('#calendar.items tbody tr')
     campsite_availability_rows.each do |row|
       next unless row.has_selector?('td.sn') && row.has_selector?('img') && /tent/.match(row.find('img')[:src])
 
