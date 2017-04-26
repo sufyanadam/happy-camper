@@ -34,7 +34,7 @@ def find_available_weekends(campsite_url, preferred_day: :friday, length_of_stay
   weekends.each do |day|
     Capybara.current_driver = :poltergeist
     Capybara.visit campsite_url.(day)
-    Capybara.click_on 'Date Range Availability'
+    Capybara.click_on 'Date Range Availability' unless campsite_url.(day) =~ /siteId/
     page = Capybara::Node::Simple.new(Capybara.page.body)
 
     availability = {}
